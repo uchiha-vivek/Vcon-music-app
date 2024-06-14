@@ -3,7 +3,7 @@ const express  =  require('express')
 const router = express.Router();
 const passport = require('passport')
 const Song = require('../models/Song.js')
-
+const User = require('../models/User.js')
 router.post("/create",passport.authenticate("jwt",{session:false}), async function(req,res){
       
    
@@ -34,6 +34,32 @@ router.get('/get/mysongs',passport.authenticate("jwt",{session:false}),async fun
     return res.status(200).json({data:songs})
 
 } )
+
+
+
+// route to get song that any specific artist has published
+
+router.get('/get/artist',passport.authenticate("jwt",{session:false}),async function(req,res){
+    const {artistId} = req.body;
+    // check whether artist exist or not
+      const artist = await User.find({_id:artistId})
+      if(!artist){
+        return res.status(301).json({err:"Artist does not exist"})
+      }
+    const songs = await Song.find({artist:artistId})
+    return res.status(200).json({data:songs})
+})
+
+// route to get single song by name
+
+router.get('/get/name',passport.authenticate("jwt",{session:false}),async function(req,res){
+    const {songName} = req.body;
+
+    const songs= await Song.find({name:songName})
+
+    return res.status(200).json({data:songs})
+})
+
 
 
 module.exports= router

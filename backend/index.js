@@ -5,6 +5,7 @@ const passport =require('passport')
 const mongoose = require('mongoose')
 const authRoutes = require('../backend/routes/auth.js')
 const songRoutes = require('../backend/routes/song.js')
+const playlistRoutes=require('../backend/routes/playlist.js')
 require('dotenv').config()
 const User = require('./models/User.js')
 const app = express()
@@ -44,7 +45,7 @@ app.get('/',function(req,res){
 
 app.use("/auth",authRoutes)
 app.use("/song",songRoutes)
-
+app.use('/playlist',playlistRoutes)
 
 
 app.listen(PORT,function(){
