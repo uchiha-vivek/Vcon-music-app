@@ -4,6 +4,7 @@ ExtractJwt = require('passport-jwt').ExtractJwt;
 const passport =require('passport')
 const mongoose = require('mongoose')
 const authRoutes = require('../backend/routes/auth.js')
+const songRoutes = require('../backend/routes/song.js')
 require('dotenv').config()
 const User = require('./models/User.js')
 const app = express()
@@ -42,6 +43,9 @@ app.get('/',function(req,res){
 })
 
 app.use("/auth",authRoutes)
+app.use("/song",songRoutes)
+
+
 
 app.listen(PORT,function(){
     console.log(`Server is running on PORT ${PORT}`);

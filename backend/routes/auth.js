@@ -33,4 +33,33 @@ router.post('/register', async function(req,res){
 
 })
 
+
+// Building route for login
+
+router.post("/login",async function(req,res){
+
+  const{email,password} = req.body;
+  const user= await User.findOne({email:email});
+  // user dont exist
+
+  if(!user){
+   return res.status(403).json({error:"Invalid Credentials"})
+  }
+
+   const isPasswordValid = await bcrypt.compare((password,user.password));
+
+   if(!isPasswordValid){
+      return res.status(403).json({error:"Invalid Credentials"});
+   }
+
+   const token = await getToken(user.email,user);
+   const userToReturn={...newUser.toJSON(),token}
+   delete userToReturn.password
+   return res.status(200).json(userToReturn)
+
+
+})
+
+
+
 module.exports=router
