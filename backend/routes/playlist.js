@@ -81,6 +81,9 @@ router.post('/add/song',passport.authenticate("jwt",{session:false}), async func
      }
      // add the songs to playlist
      playlist.songs.push(songId)
+     await playlist.save()
+
+     return res.status(200).json(playlist)
 })
 
 
